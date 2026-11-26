@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14213D">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>হাই স্কুল – ষষ্ঠ থেকে দশম শ্রেণি</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF2F8;--card:#fff;--ink:#14213D;--muted:#5B6784;--line:#D5DCEA;--gold:#F2A900;--ok:#1E8E5A;--okbg:#E3F5EB;--bad:#C93C3C;--badbg:#FBE7E7;--hdr:#14213D;--hdrink:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1626;--card:#1A2338;--ink:#E8ECF5;--muted:#9AA6C0;--line:#2A3550;--okbg:#12362A;--badbg:#3D1F23;--hdr:#0A101D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F1626;--card:#1A2338;--ink:#E8ECF5;--muted:#9AA6C0;--line:#2A3550;--okbg:#12362A;--badbg:#3D1F23;--hdr:#0A101D;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri","Noto Sans Bengali","Kalpurush",system-ui,sans-serif;font-size:17px;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header{background:var(--hdr);color:var(--hdrink);padding:18px 0 20px}
+h1{margin:0;font-size:28px;line-height:1.2}
+h1 small{display:block;font-size:14px;font-weight:400;opacity:.75;margin-top:2px}
+#q{width:100%;margin-top:14px;padding:12px 14px;border-radius:10px;border:2px solid transparent;font:inherit;background:#fff;color:#14213D}
+#q:focus{outline:none;border-color:var(--gold)}
+#tabs{display:flex;gap:8px;padding:16px 0 4px;overflow-x:auto}
+.tab{flex:1;min-width:64px;padding:10px 0 8px;border:2px solid var(--line);border-bottom:5px solid var(--line);border-radius:12px 12px 6px 6px;background:var(--card);color:var(--ink);font:inherit;font-weight:700;font-size:22px;cursor:pointer;line-height:1.1}
+.tab small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+.tab[aria-pressed="true"]{border-color:var(--ink);border-bottom-color:var(--gold);background:var(--ink);color:#fff}
+.tab[aria-pressed="true"] small{color:#d8def0}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h2{font-size:19px;margin:22px 0 8px}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;padding:13px 14px;margin-bottom:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;color:var(--ink);font:inherit;cursor:pointer}
+.ch span{color:var(--muted);font-size:14px;white-space:nowrap}
+.res{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.res b{display:block}.res .ans{color:var(--ok);margin-top:4px}.res .loc{color:var(--muted);font-size:14px;margin-top:4px}
+.back{margin:16px 0 0;padding:8px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font:inherit;cursor:pointer}
+.score{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;font-weight:700;z-index:2}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px}
+.q p{margin:0 0 10px;font-weight:700}
+.opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:6px;border:2px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.exp{margin-top:8px;color:var(--muted);font-size:15px}
+.empty{color:var(--muted);padding:24px 0;text-align:center}
+footer{color:var(--muted);font-size:13px;padding:24px 0 32px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>হাই স্কুল<small>High School · ষষ্ঠ থেকে দশম শ্রেণি</small></h1>
+<input id="q" type="search" placeholder="প্রশ্ন বা শব্দ লিখে খুঁজুন…" aria-label="প্রশ্ন খুঁজুন" autocomplete="off">
+</div></header>
+<div class="wrap">
+<nav id="tabs" aria-label="শ্রেণি"></nav>
+<main id="main"></main>
+<footer>এই সংস্করণে শুধু নমুনা অধ্যায় আছে। বাকি অধ্যায় ধাপে ধাপে যোগ হবে।</footer>
+</div>
+<script>
+// প্রশ্ন: [প্রশ্ন, [অপশন], সঠিক-অপশনের-ক্রম, ব্যাখ্যা]
+const D=[
+{c:6,s:'গণিত',t:'ভগ্নাংশ',m:[
+['১/২ + ১/৪ = কত?',['৩/৪','২/৬','১/৬','২/৪'],0,'১/২ = ২/৪, তাই ২/৪ + ১/৪ = ৩/৪।'],
+['২/৩ ভগ্নাংশটির হর কত?',['২','৩','৫','৬'],1,'ভগ্নাংশের নিচের সংখ্যাটি হর।'],
+['৩/৪ কোন ধরনের ভগ্নাংশ?',['অপ্রকৃত','মিশ্র','প্রকৃত','দশমিক'],2,'লব হরের চেয়ে ছোট হলে ভগ্নাংশটি প্রকৃত।']]},
+{c:7,s:'গণিত',t:'বীজগাণিতিক রাশি',m:[
+['x + x = কত?',['x²','2x','x','0'],1,'একই চলকের সহগ যোগ হয়: ১x + ১x = ২x।'],
+['3x − x = কত?',['2x','3','4x','x'],0,'৩x − ১x = ২x।'],
+['a × a = কত?',['2a','a²','a+a','a⁰'],1,'একই রাশি দুইবার গুণ করলে বর্গ হয়: a × a = a²।']]},
+{c:8,s:'বিজ্ঞান',t:'পদার্থের অবস্থা',m:[
+['প্রমাণ চাপে পানির স্ফুটনাঙ্ক কত?',['০°C','৫০°C','১০০°C','২০০°C'],2,'প্রমাণ বায়ুচাপে পানি ১০০°C তাপমাত্রায় ফোটে।'],
+['বরফ গলে পানি হওয়াকে কী বলে?',['গলন','বাষ্পীভবন','ঘনীভবন','ঊর্ধ্বপাতন'],0,'কঠিন থেকে তরলে রূপান্তরের নাম গলন।'],
+['কঠিন থেকে সরাসরি গ্যাসে রূপান্তরকে কী বলে?',['গলন','ঊর্ধ্বপাতন','হিমায়ন','স্ফুটন'],1,'কর্পূর ও নেপথলিনে ঊর্ধ্বপাতন দেখা যায়।']]},
+{c:9,s:'পদার্থবিজ্ঞান',t:'গতি',m:[
+['বেগের SI একক কোনটি?',['m/s²','m/s','kg·m','N'],1,'বেগ = সরণ ÷ সময়, তাই একক m/s।'],
+['ত্বরণের SI একক কোনটি?',['m/s','m/s²','m','s'],1,'ত্বরণ = বেগের পরিবর্তন ÷ সময়, একক m/s²।'],
+['দূরত্ব ÷ সময় = কী?',['দ্রুতি','ত্বরণ','বল','কাজ'],0,'মোট দূরত্বকে মোট সময় দিয়ে ভাগ করলে দ্রুতি পাওয়া যায়।']]},
+{c:10,s:'রসায়ন',t:'অম্ল ও ক্ষার',m:[
+['নীল লিটমাস অম্লে কী রং ধারণ করে?',['লাল','সবুজ','হলুদ','অপরিবর্তিত'],0,'অম্ল নীল লিটমাসকে লাল করে।'],
+['নিরপেক্ষ দ্রবণের pH মান কত?',['১','৭','১০','১৪'],1,'pH ৭ হলে দ্রবণ নিরপেক্ষ, ৭-এর কম হলে অম্লীয়।'],
+['নিচের কোনটি অম্ল?',['NaOH','HCl','NaCl','KOH'],1,'HCl (হাইড্রোক্লোরিক অ্যাসিড) একটি অম্ল।']]}
+];
+const NAMES={6:'ষষ্ঠ',7:'সপ্তম',8:'অষ্টম',9:'নবম',10:'দশম'};
+const BN='০১২৩৪৫৬৭৮৯',bn=n=>String(n).replace(/\d/g,d=>BN[d]);
+const S={c:9,q:'',ch:null,done:{}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function tabs(){
+  $('tabs').innerHTML=Object.keys(NAMES).map(c=>`<button class="tab" data-c="${c}" aria-pressed="${S.c==c}">${bn(c)}<small>${NAMES[c]}</small></button>`).join('');
+}
+function home(){
+  const subs=[...new Set(D.filter(x=>x.c==S.c).map(x=>x.s))];
+  if(!subs.length) return `<p class="empty">এই শ্রেণির অধ্যায় শীঘ্রই আসছে।</p>`;
+  return subs.map(s=>`<h2>${esc(s)}</h2>`+D.map((x,i)=>[x,i]).filter(([x])=>x.c==S.c&&x.s==s)
+    .map(([x,i])=>`<button class="ch" data-i="${i}">${esc(x.t)}<span>${bn(x.m.length)}টি এমসিকিউ</span></button>`).join('')).join('');
+}
+function search(){
+  const k=S.q.trim().toLowerCase(),r=[];
+  D.forEach((x,i)=>x.m.forEach((m,j)=>{
+    if((m[0]+' '+m[1].join(' ')+' '+m[3]+' '+x.t+' '+x.s).toLowerCase().includes(k)) r.push([x,i,m]);
+  }));
+  if(!r.length) return `<p class="empty">“${esc(S.q)}” নিয়ে কোনো প্রশ্ন পাওয়া যায়নি। অন্য শব্দ দিয়ে চেষ্টা করুন।</p>`;
+  return `<h2>${bn(r.length)}টি ফলাফল</h2>`+r.slice(0,30).map(([x,i,m])=>`<div class="res" data-i="${i}" tabindex="0" role="button"><b>${esc(m[0])}</b><div class="ans">উত্তর: ${esc(m[1][m[2]])}</div><div class="loc">ক্লাস ${bn(x.c)} · ${esc(x.s)} · ${esc(x.t)}</div></div>`).join('');
+}
+function quiz(){
+  const x=D[S.ch],d=S.done[S.ch]||{};
+  const got=Object.keys(d).filter(j=>d[j]==x.m[j][2]).length,n=Object.keys(d).length;
+  return `<button class="back" data-back>← ফিরে যান</button><h2>${esc(x.s)} · ${esc(x.t)}</h2>
+  <div class="score">সঠিক ${bn(got)} / উত্তর দেওয়া ${bn(n)} (মোট ${bn(x.m.length)})</div>`+
+  x.m.map((m,j)=>`<div class="q"><p>${bn(j+1)}। ${esc(m[0])}</p>`+m[1].map((o,k)=>{
+    let cl='';if(d[j]!==undefined){if(k==m[2])cl=' ok';else if(k==d[j])cl=' bad';}
+    return `<button class="opt${cl}" data-j="${j}" data-k="${k}" ${d[j]!==undefined?'disabled':''}>${esc(o)}</button>`}).join('')+
+    (d[j]!==undefined?`<div class="exp">${esc(m[3])}</div>`:'')+`</div>`).join('');
+}
+function render(){
+  $('main').innerHTML=S.ch!==null?quiz():(S.q.trim()?search():home());
+  $('tabs').style.display=(S.ch!==null||S.q.trim())?'none':'flex';
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-c],[data-i],[data-back],[data-j]');if(!t)return;
+  if(t.dataset.c){S.c=+t.dataset.c;tabs();render();}
+  else if(t.dataset.j!==undefined){(S.done[S.ch]=S.done[S.ch]||{})[t.dataset.j]=+t.dataset.k;render();}
+  else if(t.dataset.i!==undefined){S.ch=+t.dataset.i;render();window.scrollTo(0,0);}
+  else if(t.hasAttribute('data-back')){S.ch=null;render();}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList.contains('res'))e.target.click();});
+$('q').addEventListener('input',e=>{S.q=e.target.value;S.ch=null;render();});
+tabs();render();
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>

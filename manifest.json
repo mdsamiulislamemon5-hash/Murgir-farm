@@ -1,0 +1,17 @@
+{
+  "name": "হাই স্কুল",
+  "short_name": "হাই স্কুল",
+  "description": "ষষ্ঠ থেকে দশম শ্রেণির প্রশ্ন খুঁজুন ও এমসিকিউ অনুশীলন করুন",
+  "lang": "bn",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#14213D",
+  "theme_color": "#14213D",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
